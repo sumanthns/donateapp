@@ -2,7 +2,7 @@
 {% block content %}
 <script>
 function poll_payment_status(){
-if($('#requestDonate').attr('hidden') === 'hidden'){
+if($('#requestDonate').is(':hidden')){
     $.get("/users/{{user_id}}/payments/{{form.payment_request_id}}")
         .done(function(data){
             if(data === 'Credit'){
