@@ -178,24 +178,20 @@ def get_payment(user_id, payment_request_id):
 
 @app.route("/payment_gateway_webhook", methods=["POST"])
 def payment_ack():
-    print "Encoded"
-    print request.data
+    #Set content-type to application/json
+    if request.environ['CONTENT_TYPE'] == 'application/x-www-form-urlencoded':
+        request.environ['CONTENT_TYPE'] = 'application/json'
     urldecoded_data = urllib.unquote(request.data).\
         decode('utf8')
-    print "Decoded"
-    print urldecoded_data
     url_components = urldecoded_data.split('&')
-    print "Comps list"
-    print url_components
-    url_dict = {}
+    if not url_components:
+        return "No data sent", 400
 
-    print "Before loop"
+    url_dict = {}
     for comp in url_components:
-        print comp
         k, v = comp.split('=')
         url_dict[k] = v
 
-    print "Loop finished"
     print url_dict
     if not verify_mac(url_dict):
         return "Mac not authenticated", 401

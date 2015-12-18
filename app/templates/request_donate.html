@@ -2,13 +2,15 @@
 {% block content %}
 <script>
 function poll_payment_status(){
-$.get("/users/{{user_id}}/payments/{{form.payment_request_id}}")
-    .done(function(data){
-        if(data === 'Credit'){
-            $('.spinner-loader').hide();
-            $('form').show();
-        }
-    });
+if($('#requestDonate').attr('hidden') === 'true '){
+    $.get("/users/{{user_id}}/payments/{{form.payment_request_id}}")
+        .done(function(data){
+            if(data === 'Credit'){
+                $('.spinner-loader').hide();
+                $('#requestDonate').show();
+            }
+     });
+}
 };
 $(document).ready(function(){
 
@@ -39,7 +41,7 @@ setInterval(function(){ poll_payment_status(); }, 5000)
                 {{ error }}
             </div>
             {% endfor %}
-            <form class="form-signin" method="post" action="request_donate" hidden="true" id="">
+            <form class="form-signin" method="post" action="request_donate" hidden="true" id="requestDonate">
                 {{ form.hidden_tag() }}
                 <h2 class="form-signin-heading">Please request your friends to donate</h2>
                 <label for="email1" class="sr-only">Email address</label>
