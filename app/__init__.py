@@ -1,3 +1,4 @@
+import os
 from config import PAYMENT_GW_API_KEY, PAYMENT_GW_AUTH_TOKEN
 from flask import Flask
 
@@ -24,7 +25,7 @@ admin = Admin(app, index_view=MyAdmin(url='/admin', name='Admin Home'))
 
 from app import views, models
 
-if not app.debug:
+if not app.debug and os.environ.get('HEROKU') is None:
     import logging
     from logging.handlers import RotatingFileHandler
 
@@ -34,3 +35,10 @@ if not app.debug:
     file_handler.setLevel(logging.INFO)
     app.logger.addHandler(file_handler)
     app.logger.info('donateapp startup')
+
+if os.environ.get('HEROKU') is not None:
+    import logging
+    stream_handler = logging.StreamHandler()
+    app.logger.addHandler(stream_handler)
+    app.logger.setLevel(logging.INFO)
+    app.logger.info('donateapp-test startup')

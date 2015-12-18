@@ -7,13 +7,12 @@ DB_USER = 'root'
 DB_PASSWORD = ''
 DB_HOST = 'localhost'
 DB_NAME = 'donateapp'
-SQLALCHEMY_DATABASE_URI = "mysql://{0}:{1}@{2}/{3}".\
-    format(DB_USER, DB_PASSWORD, DB_HOST, DB_NAME)
+SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL")
 SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repository')
 DATABASE_QUERY_TIMEOUT = 0.5
 WTF_CSRF_ENABLED = True
 SECRET_KEY = str(uuid.uuid4())
-HOSTNAME = "http://donateapp.com"
+HOSTNAME = os.environ.get("HOSTNAME")
 
 # email server
 MAIL_SERVER = 'smtp.gmail.com'
