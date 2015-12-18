@@ -178,9 +178,6 @@ def get_payment(user_id, payment_request_id):
 
 @app.route("/payment_gateway_webhook", methods=["POST"])
 def payment_ack():
-    #Set content-type to application/json
-    if request.environ['CONTENT_TYPE'] == 'application/x-www-form-urlencoded':
-        request.environ['CONTENT_TYPE'] = 'application/json'
     print "Encoded"
     print request.data
     urldecoded_data = urllib.unquote(request.data).\
