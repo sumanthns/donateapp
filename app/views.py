@@ -18,9 +18,11 @@ from werkzeug.utils import redirect
 def index():
     return render_template('index.html')
 
+
 @lm.user_loader
 def load_user(user_id):
     return User.query.get(user_id)
+
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -34,23 +36,28 @@ def login():
         return redirect(request.args.get('next') or url_for('index'))
     return render_template('login.html', form=form)
 
+
 @app.route('/logout')
 def logout():
     logout_user()
     return redirect(url_for('index'))
 
+
 @app.errorhandler(404)
 def not_found_error(error):
     return render_template('404.html'), 404
+
 
 @app.errorhandler(500)
 def internal_error(error):
     db.session.rollback()
     return render_template('500.html'), 500
 
+
 @app.before_request
 def before_request():
     g.user = current_user
+
 
 @app.route('/forgot_password', methods=["GET", "POST"])
 def forgot_password():
@@ -69,6 +76,7 @@ def forgot_password():
 
     return render_template('forgot_password.html', form=form)
 
+
 @app.route('/register', methods=["GET", "POST"])
 def register():
     user = None
@@ -78,9 +86,9 @@ def register():
 
     if request.method == 'GET':
         seed = request.args.get('seed', None)
-        form=RegisterForm(user=user, seed=seed)
+        form = RegisterForm(user=user, seed=seed)
     else:
-        form=RegisterForm(user=user)
+        form = RegisterForm(user=user)
 
     if form.validate_on_submit():
         user = User(name=form.name.data,
@@ -97,6 +105,7 @@ def register():
         return redirect(url_for("login"))
     return render_template("register.html", form=form)
 
+
 @app.route("/request_donate", methods=["GET", "POST"])
 @login_required
 def request_donate():
@@ -106,7 +115,7 @@ def request_donate():
 
     if form.validate_on_submit():
         seed = g.user
-        subject = "%s requests you to donate for the cause!"\
+        subject = "%s requests you to donate for the cause!" \
                   % seed.name
         sender = ADMINS[0]
         link = "{0}/register?seed={1}".format(HOSTNAME, seed.uuid)
@@ -121,6 +130,7 @@ def request_donate():
         return redirect(url_for('index'))
     return render_template('request_donate.html', form=form, user_id=g.user.id)
 
+
 @app.route("/donate", methods=["GET", "POST"])
 @login_required
 def donate():
@@ -130,8 +140,8 @@ def donate():
         amount = form.amount.data
         purpose = "donateapp"
         email = g.user.email
-        webhook= "{0}/payment_gateway_webhook".format(HOSTNAME)
-        allow_repeated_payments=False
+        webhook = "{0}/payment_gateway_webhook".format(HOSTNAME)
+        allow_repeated_payments = False
 
         response = payment_gateway_api.payment_request_create(
             purpose=purpose,
@@ -153,6 +163,7 @@ def donate():
     flash("Thank you for your support!")
     return render_template('donate.html', form=form)
 
+
 @app.route("/users/<user_id>/payments/<payment_request_id>",
            methods=["GET"])
 def get_payment(user_id, payment_request_id):
@@ -163,6 +174,7 @@ def get_payment(user_id, payment_request_id):
             if payment:
                 return payment.status, 200
     return None
+
 
 @app.route("/payment_gateway_webhook", methods=["POST"])
 def payment_ack():
@@ -175,7 +187,7 @@ def payment_ack():
     ).first()
 
     if not payment:
-        #payment was requested made by system, not sure what to do
+        # payment was requested made by system, not sure what to do
         return
     payment.payment_id = data['payment_id']
     payment.status = data['status']
@@ -186,16 +198,19 @@ def payment_ack():
     send_thankyou_email(user=user, amount=payment.amount)
     return "Success!", 200
 
+
 @app.route("/my_donations", methods=["GET"])
 @login_required
 def my_donations():
     donations = g.user.payments.all()
     return render_template("my_donations.html", donations=donations)
 
+
 @app.after_request
 def after_request(response):
     for query in get_debug_queries():
         if query.duration >= DATABASE_QUERY_TIMEOUT:
-            app.logger.warning("SLOW QUERY: %s\nParameters: %s\nDuration: %fs\nContext: %s\n" % (query.statement, query.parameters, query.duration, query.context))
+            app.logger.warning("SLOW QUERY: %s\nParameters: %s\nDuration: %fs\nContext: %s\n" % (
+                query.statement, query.parameters, query.duration, query.context))
     return response
 
