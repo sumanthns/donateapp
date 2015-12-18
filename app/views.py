@@ -1,4 +1,6 @@
+# coding=utf-8
 import json
+import urllib
 import uuid
 import datetime
 
@@ -179,25 +181,30 @@ def get_payment(user_id, payment_request_id):
 
 @app.route("/payment_gateway_webhook", methods=["POST"])
 def payment_ack():
-    #Set content-type to application/json
-    if request.environ['CONTENT_TYPE'] == 'application/x-www-form-urlencoded':
-        request.environ['CONTENT_TYPE'] = 'application/json'
+    #Screw instamojos for url encoding.
+    # WHY U NO application/json? ¯\_(ツ)_/¯
+    urlencoded_data = request.data
+    urldecoded_data = urllib.unquote(urlencoded_data).\
+        decode('utf8')
+    url_components = urldecoded_data.split('&')
+    url_dict = {}
 
-    jsondata = request.data
-    print jsondata
-    data = json.loads(jsondata)
-    if not verify_mac(data):
+    for comp in url_components:
+        k, v = comp.split('=')
+        url_dict[k] = v
+
+    if not verify_mac(url_dict):
         return "Mac not authenticated", 401
 
     payment = Payment.query.filter_by(
-        payment_request_id=data['payment_request_id']
+        payment_request_id=url_dict['payment_request_id']
     ).first()
 
     if not payment:
         # payment was requested made by system, not sure what to do
         return
-    payment.payment_id = data['payment_id']
-    payment.status = data['status']
+    payment.payment_id = url_dict['payment_id']
+    payment.status = url_dict['status']
     payment.donated_on = datetime.datetime.utcnow()
     db.session.add(payment)
     db.session.commit()
