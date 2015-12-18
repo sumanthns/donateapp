@@ -181,12 +181,9 @@ def get_payment(user_id, payment_request_id):
 
 @app.route("/payment_gateway_webhook", methods=["POST"])
 def payment_ack():
-    #Screw instamojos for url encoding.
-    # WHY U NO application/json? ¯\_(ツ)_/¯
-    urlencoded_data = request.data
     print "Encoded"
-    print urlencoded_data
-    urldecoded_data = urllib.unquote(urlencoded_data).\
+    print request.data
+    urldecoded_data = urllib.unquote(request.data).\
         decode('utf8')
     print "Decoded"
     print urldecoded_data
