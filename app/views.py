@@ -1,3 +1,4 @@
+import json
 import uuid
 import datetime
 
@@ -178,7 +179,8 @@ def get_payment(user_id, payment_request_id):
 
 @app.route("/payment_gateway_webhook", methods=["POST"])
 def payment_ack():
-    data = request.data
+    jsondata = request.data
+    data = json.loads(jsondata)
     if not verify_mac(data):
         return "Mac not authenticated", 401
 
