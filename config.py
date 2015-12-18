@@ -3,10 +3,6 @@ import uuid
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
-DB_USER = 'root'
-DB_PASSWORD = ''
-DB_HOST = 'localhost'
-DB_NAME = 'donateapp'
 SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL")
 SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repository')
 DATABASE_QUERY_TIMEOUT = 0.5
