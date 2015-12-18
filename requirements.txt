@@ -22,4 +22,4 @@ six==1.10.0
 sqlalchemy-migrate==0.10.0
 sqlparse==0.1.18
 wsgiref==0.1.2
-#git+git://github.com/Instamojo/instamojo-py.git
+git+git://github.com/Instamojo/instamojo-py.git
