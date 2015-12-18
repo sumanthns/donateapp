@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+<script>
+function poll_payment_status(){
+$.get("/users/{{user_id}}/payments/{{form.payment_request_id}}")
+    .done(function(data){
+        if(data === 'Credit'){
+            $('.spinner-loader').hide();
+            $('form').show();
+        }
+    });
+};
+$(document).ready(function(){
+
+setInterval(function(){ poll_payment_status(); }, 5000)
+});
+</script>
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="col-xs-12 col-md-6 col-md-offset-3">
+            <h1>Thank you for your donation!</h1>
+            <div class="centering text-center">
+                <div class="spinner-loader">
+                    Loading…
+                </div>
+            </div>
+            {% for error in form.email1.errors %}
+            <div class="alert alert-danger" role="alert">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                <span class="sr-only">Error:</span>
+                {{ error }}
+            </div>
+            {% endfor %}
+            {% for error in form.email2.errors %}
+            <div class="alert alert-danger" role="alert">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                <span class="sr-only">Error:</span>
+                {{ error }}
+            </div>
+            {% endfor %}
+            <form class="form-signin" method="post" action="request_donate" hidden="true" id="">
+                {{ form.hidden_tag() }}
+                <h2 class="form-signin-heading">Please request your friends to donate</h2>
+                <label for="email1" class="sr-only">Email address</label>
+                {{ form.email1(type="email", id="email", class="form-control", placeholder="Email 1", autofocus=true, required=true)}}
+                <label for="email2" class="sr-only">Email address</label>
+                {{ form.email2(type="email", id="email", class="form-control", placeholder="Email 2", autofocus=true, required=true)}}
+                <button class="btn btn-lg btn-success btn-block" type="submit">Send Request</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

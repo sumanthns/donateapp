@@ -1,0 +1,7 @@
+Hi {{user}},
+
+We sincerely thank you for contributing Rs {{ amount }} towards our cause.
+This will go a long way to help us.
+
+Yours sincerely,
+Donate app admins

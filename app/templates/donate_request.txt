@@ -1,0 +1,10 @@
+Hi,
+
+{{seed}} requests you to donate to out cause!
+
+If you are interested, please click on the following link:
+
+{{link}}
+
+Yours sincerely,
+Donate app admins

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link rel="stylesheet" href="/static/css/spinner.css" type="text/css">
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% if title %}
+    <title>{{ title }} - Donate App</title>
+    {% else %}
+    <title>Welcome to Donateapp</title>
+    {% endif %}
+</head>
+<body>
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href={{url_for('index')}}>Donate</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href={{ url_for('index') }}>Home <span class="sr-only">(current)</span></a></li>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Contact Us</a></li>
+                {% if g.user and g.user.is_authenticated %}
+                <li><a href={{url_for('my_donations')}}>My Donations</a></li>
+                {% endif %}
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                {% if g.user and g.user.is_authenticated %}
+                Hi {{ g.user.name }} |
+                <a href={{url_for('logout')}} class="btn btn-default btn-danger btn-account">
+                    <span class="glyphicon glyphicon-log-out"></span> Log Out </a>
+                {% else %}
+                <a href={{url_for('login')}} class="btn btn-default btn-success btn-account" role="button">
+                    <span class="glyphicon glyphicon-log-in"></span> Log In </a>
+                {% endif %}
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12 col-md-6 col-md-offset-3">
+            {% for category, message in messages %}
+            {% if category == 'error' %}
+            {% set category = 'danger' %}
+            {% set glyph = 'exclamation-sign' %}
+            {% else %}
+            {% set category = 'success' %}
+            {% set glyph = 'ok' %}
+            {% endif %}
+            <div class="alert alert-{{category}}" role="alert">
+                <span class="glyphicon glyphicon-{{glyph}}" aria-hidden="true"></span>
+                {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+    {% endwith %}
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

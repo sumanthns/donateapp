@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+<h3>Total donation made: <span class="label label-success">{{total_donation}}</span> INR</h3>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Donation</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for user, payment in user_payments.iteritems() %}
+    <tr>
+        <td>{{ user }}</td>
+        <td>{{ payment }}
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% if users.has_prev  or users.has_next %}
+{% if users.has_prev %}
+<a href="{{ url_for('myadmin.index', page=users.prev_num) }}">&lt;&lt; Prev</a>
+{% else %}
+&lt;&lt; Prev
+{% endif %} |
+{% if users.has_next %}
+<a href="{{ url_for('myadmin.index', page=users.next_num) }}">Next &gt;&gt;</a>
+{% else %}
+Next &gt;&gt;
+{% endif %}
+{% endif %}
+
+{% endblock %}
+
