@@ -184,15 +184,25 @@ def payment_ack():
     #Screw instamojos for url encoding.
     # WHY U NO application/json? ¯\_(ツ)_/¯
     urlencoded_data = request.data
+    print "Encoded"
+    print urlencoded_data
     urldecoded_data = urllib.unquote(urlencoded_data).\
         decode('utf8')
+    print "Decoded"
+    print urldecoded_data
     url_components = urldecoded_data.split('&')
+    print "Comps list"
+    print url_components
     url_dict = {}
 
+    print "Before loop"
     for comp in url_components:
+        print comp
         k, v = comp.split('=')
         url_dict[k] = v
 
+    print "Loop finished"
+    print url_dict
     if not verify_mac(url_dict):
         return "Mac not authenticated", 401
 
