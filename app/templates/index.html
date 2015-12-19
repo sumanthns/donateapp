@@ -1,5 +1,49 @@
 {% extends "base.html" %}
 {% block content %}
-<a href={{url_for('donate')}} class="btn btn-large btn-info" role="button">Donate</a>
+<div class="jumbotron">
+    <div class="container">
+        <img alt="100%x200" class="img-responsive" src="/static/images/jumbotron.jpg">
+        <h1>Hello folks!</h1>
+        <p>This is a app to test the donate feature. Actual content is yet to come.</p>
+        <p><a href={{url_for('donate')}} class="btn btn-primary btn-lg" role="button">Donate</a></p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-6 col-md-4">
+        <div class="thumbnail">
+            <img alt="100%x200" class="img-responsive" src="/static/images/ganesha1.jpg">
+            <div class="caption">
+                <h3>Thumbnail label</h3>
+                <p>Bharat, the land of spiritual bliss is strongly believed to be pervaded by the Lords, their deep imprints and a sense of divine presence, eternally available in the environment around.
+The presence of deities is often felt in the structures called temples, which are the epitomes of the great, age old, rich Hindu Sanatana Dharma. Among the galaxy of temples, which are also the architectural marvels located in our country, the hill shrine of Tirumala is accredited as being the most visited temple in India and also in the world as a whole. Located on the picturesque Seshachalam Hill Ranges, this temple occupies a unique place in our great land of holy shrines.</p>
+                <p><a href="#" class="btn btn-primary" role="button">What is this temple?</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-md-4">
+        <div class="thumbnail">
+            <img alt="100%x200" class="img-responsive" src="/static/images/ganesha2.jpg">
+            <div class="caption">
+                <h3>Thumbnail label</h3>
+                <p>During the eight thousand yugas (the time equivalent to a day and night for Brahma, the Creator), there was a raging fire, and everything on Earth was reduced to ashes. Man had to forsake the Earth and seek refuge in Janaloka.
+At the approach of night (for Brahma), Vayu, the Wind God, blew furiously. Huge clouds were formed, there was a torrential rain, which resulted in Pralaya Kalpa (the Great Deluge). The Earth sank into the Patala loka, and remained in that state for a thousand years (during a part of that night of Brahma).</p>
+                <p><a href="#" class="btn btn-primary" role="button">Where is the temple?</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-md-4">
+        <div class="thumbnail">
+            <img alt="100%x200" class="img-responsive" src="/static/images/ganesha3.jpg">
+            <div class="caption">
+                <h3>Thumbnail label</h3>
+                <p>The “Temple Legend” is made out of references from a range of ancient scriptures such as Varaha Purana, Padma Purana, Garuda Purana, Brahmanda Purana, Markandeya Purana, Harivamsa Purana, Vamana Purana, Brahma Purana, Brahmottara Purana, Aditya Purana, Skanda Purana and Bhavishyottara Purana.These extracts describe the sanctity and antiquity of the deity, temple and the hills around Tirumala, besides the numerous teerthams, streams and springs that abound them.</p>
+                <p><a href="#" class="btn btn-primary" role="button">What is the story?</a></p>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
