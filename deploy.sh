@@ -9,6 +9,7 @@ heroku ps:scale upgrade=0
 
 echo Upgrading database
 heroku ps:scale upgrade=1
+heroku ps:scale upgrade=0
 
 echo Starting dynos
 heroku ps:scale web=1
